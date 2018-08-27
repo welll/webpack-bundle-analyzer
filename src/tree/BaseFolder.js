@@ -1,5 +1,5 @@
 import _ from 'lodash';
-
+import filesize from 'filesize';
 import Node from './Node';
 
 export default class BaseFolder extends Node {
@@ -81,8 +81,13 @@ export default class BaseFolder extends Node {
   }
 
   toChartData() {
+    let label = this.name;
+    if (true) {
+      label = `${this.name} - ${filesize(this.size)}`;
+    }
+
     return {
-      label: this.name,
+      label,
       path: this.path,
       statSize: this.size,
       groups: _.invokeMap(this.children, 'toChartData')

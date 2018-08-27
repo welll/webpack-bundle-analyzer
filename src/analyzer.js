@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const filesize = require('filesize');
 
 const _ = require('lodash');
 const gzipSize = require('gzip-size');
@@ -91,8 +92,13 @@ function getViewerData(bundleStats, bundleDir, opts) {
   }, {});
 
   return _.transform(assets, (result, asset, filename) => {
+    let label = filename
+    if (true) {
+      label = `${filename} - ${filesize(asset.tree.size || asset.size)}`;
+    }
+
     result.push({
-      label: filename,
+      label,
       // Not using `asset.size` here provided by Webpack because it can be very confusing when `UglifyJsPlugin` is used.
       // In this case all module sizes from stats file will represent unminified module sizes, but `asset.size` will
       // be the size of minified bundle.
